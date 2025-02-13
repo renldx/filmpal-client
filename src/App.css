@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans');
+
+:root {
+    --spacer-small: 0.25rem;
+    --spacer-medium: 0.5rem;
+}
+
+body {
+    font-family: 'Josefin Sans', serif !important;
+}
+
+h1 {
+    margin-left: 1rem;
+}
+
+.spinner-border {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+}
+
+.genre {
+    margin: var(--spacer-small);
+    text-transform: capitalize;
+    width: 10rem;
+}
+
+.suggested-movie {
+    float: left;
+    width: 24rem;
+    margin: var(--spacer-medium);
+    cursor: pointer;
+}
+
+.suggested-movie h4 {
+    height: 3.5rem;
+    overflow: hidden;
+}
+
+.watched-movies tr {
+    vertical-align: middle;
+}
+
+.watched-movies button, .watched-movie button {
+    margin: var(--spacer-small);
+}
+
+.watched-movie label:not(:first-child) {
+    margin-top: var(--spacer-medium);
+}
+
+.watched-movie .error {
+    color: red;
+    margin-left: var(--spacer-medium);
+}
