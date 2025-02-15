@@ -21,7 +21,7 @@ const SuggestedMovies = () => {
     const [movies, setMovies] = useState([]);
 
     const [modal, setModal] = useState(false);
-    const [movie, setMovie] = useState(undefined);
+    const [movie, setMovie] = useState(null);
 
     const toggleModal = (event, movie) => {
         setMovie(movie);
