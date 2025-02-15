@@ -38,7 +38,7 @@ const WatchedMovie = () => {
                     setLoading(false);
                 });
         }
-    }, []);
+    }, [code]);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -79,7 +79,7 @@ const WatchedMovie = () => {
 
     const createMovie = () => {
         (async () => {
-            const rawResponse = await fetch("/api/watched/movie", {
+            await fetch("/api/watched/movie", {
                 method: "POST",
                 headers: {
                     Accept: "application/json",
@@ -97,7 +97,7 @@ const WatchedMovie = () => {
 
     const updateMovie = () => {
         (async () => {
-            const rawResponse = await fetch(`/api/watched/movie?code=${code}`, {
+            await fetch(`/api/watched/movie?code=${code}`, {
                 method: "PUT",
                 headers: {
                     Accept: "application/json",

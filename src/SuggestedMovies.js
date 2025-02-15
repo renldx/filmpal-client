@@ -32,7 +32,7 @@ const SuggestedMovies = () => {
 
     const selectMovie = () => {
         (async () => {
-            const rawResponse = await fetch("/api/watched/movie", {
+            await fetch("/api/watched/movie", {
                 method: "POST",
                 headers: {
                     Accept: "application/json",
@@ -60,7 +60,7 @@ const SuggestedMovies = () => {
                 setMovies(data);
                 setLoading(false);
             });
-    }, []);
+    }, [genre]);
 
     if (loading) {
         return <Spinner></Spinner>;
