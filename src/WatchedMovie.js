@@ -69,7 +69,7 @@ const WatchedMovie = () => {
         }
 
         if (!formData.release) {
-            errors.release = "Release date is required";
+            errors.release = "Release year is required";
         }
 
         setFormData((prevState) => ({ ...prevState, errors }));
@@ -148,7 +148,10 @@ const WatchedMovie = () => {
                         onChange={handleChange}
                         id="release"
                         name="release"
-                        type="date"
+                        type="number"
+                        min="1890"
+                        max="2100"
+                        step="1"
                         value={formData?.release}
                     />
                 </FormGroup>
