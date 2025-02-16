@@ -27,7 +27,7 @@ h1 {
 
 .suggested-movie {
     float: left;
-    width: 24rem;
+    width: 16rem;
     margin: var(--spacer-medium);
     cursor: pointer;
 }
