@@ -30,7 +30,7 @@ const WatchedMovies = () => {
     useEffect(() => {
         setLoading(true);
 
-        fetch("api/watched/movies")
+        fetch("/api/watched/movies")
             .then((response) => response.json())
             .then((data) => {
                 setMovies(data);
@@ -43,7 +43,7 @@ const WatchedMovies = () => {
     };
 
     const deleteMovie = async () => {
-        await fetch(`api/watched/movie?code=${movie.code}`, {
+        await fetch(`/api/watched/movie?code=${movie.code}`, {
             method: "DELETE",
             headers: {
                 Accept: "application/json",

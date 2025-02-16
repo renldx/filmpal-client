@@ -14,7 +14,7 @@ const Genres = () => {
     useEffect(() => {
         setLoading(true);
 
-        fetch("api/genres")
+        fetch("/api/genres")
             .then((response) => response.json())
             .then((data) => {
                 setGenres(data);
