@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Josefin+Sans');
+@import url("https://fonts.googleapis.com/css?family=Josefin+Sans");
 
 :root {
     --spacer-small: 0.25rem;
@@ -6,7 +6,8 @@
 }
 
 body {
-    font-family: 'Josefin Sans', serif !important;
+    font-family: "Josefin Sans", serif !important;
+    padding-bottom: 1rem;
 }
 
 h1 {
@@ -26,10 +27,11 @@ h1 {
 }
 
 .suggested-movie {
-    float: left;
-    width: 16rem;
-    margin: var(--spacer-medium);
     cursor: pointer;
+}
+
+.suggested-movie .poster {
+    text-align: center;
 }
 
 .suggested-movie h4 {
@@ -41,7 +43,8 @@ h1 {
     vertical-align: middle;
 }
 
-.watched-movies button, .watched-movie button {
+.watched-movies button,
+.watched-movie button {
     margin: var(--spacer-small);
 }
 

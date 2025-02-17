@@ -17,10 +17,10 @@ const SuggestedMovie = ({ movie, releaseYear, toggleModal }) => {
             onClick={(event) => {
                 toggleModal(event, movie);
             }}
-            className="suggested-movie">
+            className="suggested-movie flex-fill">
             <img
                 className="poster"
-                alt="Movie Poster"
+                alt="🎥"
                 src={
                     movieData?.poster === "N/A" ? "" : movieData?.poster
                 }></img>
@@ -29,7 +29,6 @@ const SuggestedMovie = ({ movie, releaseYear, toggleModal }) => {
                 <CardSubtitle tag="h5" className="mb-2 text-muted">
                     {releaseYear(movie.release)}
                 </CardSubtitle>
-                <CardText></CardText>
             </CardBody>
         </Card>
     );

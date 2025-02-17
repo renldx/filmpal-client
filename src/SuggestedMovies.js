@@ -70,14 +70,17 @@ const SuggestedMovies = () => {
         <Container fluid>
             <h2>Movie Suggestions</h2>
             <h3>Pick a movie:</h3>
-            <div>
+            <div className="row gy-3">
                 {movies.map((m) => (
-                    <SuggestedMovie
+                    <div
                         key={m.code}
-                        movie={m}
-                        releaseYear={releaseYear}
-                        toggleModal={toggleModal}
-                    />
+                        className="col-sm-12 col-md-6 col-lg-3 col-xl-2 d-flex">
+                        <SuggestedMovie
+                            movie={m}
+                            releaseYear={releaseYear}
+                            toggleModal={toggleModal}
+                        />
+                    </div>
                 ))}
             </div>
 
