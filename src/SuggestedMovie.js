@@ -6,18 +6,17 @@ const SuggestedMovie = ({ movie, toggleModal }) => {
     const [retriedFetch, setRetriedFetch] = useState(false);
 
     useEffect(() => {
-        fetch(`/api/details/movie?code=${movie.code}`)
-            .then((response) => response.json())
-            .then((data) => {
-                setMovieData(data);
-            });
+        fetchMovieDetails(movie.code);
     }, [movie.code]);
 
-    const retryFetchByTitle = () => {
+    const retryFetch = () => {
         setRetriedFetch(true);
         let codeWithoutYear = movie.code.slice(0, -4) + "????";
+        fetchMovieDetails(codeWithoutYear);
+    };
 
-        fetch(`/api/details/movie?code=${codeWithoutYear}`)
+    const fetchMovieDetails = (code) => {
+        fetch(`/api/details/movie?code=${code}`)
             .then((response) => response.json())
             .then((data) => {
                 setMovieData(data);
@@ -30,7 +29,7 @@ const SuggestedMovie = ({ movie, toggleModal }) => {
         !retriedFetch &&
         (movieData.response === "False" || movie.title !== movieData.title)
     ) {
-        retryFetchByTitle();
+        retryFetch();
     } else if (movieData.response === "True") {
         return (
             <div className="col-sm-12 col-md-6 col-lg-3 col-xl-2 d-flex">
