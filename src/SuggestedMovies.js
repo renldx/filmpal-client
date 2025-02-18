@@ -70,11 +70,11 @@ const SuggestedMovies = () => {
             <h3>Pick a movie:</h3>
             <div className="row gy-3">
                 {movies.map((m) => (
-                    <div
+                    <SuggestedMovie
                         key={m.code}
-                        className="col-sm-12 col-md-6 col-lg-3 col-xl-2 d-flex">
-                        <SuggestedMovie movie={m} toggleModal={toggleModal} />
-                    </div>
+                        movie={m}
+                        toggleModal={toggleModal}
+                    />
                 ))}
             </div>
 
