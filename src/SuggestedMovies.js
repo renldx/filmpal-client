@@ -49,8 +49,6 @@ const SuggestedMovies = () => {
         navigate("/");
     };
 
-    const releaseYear = (date) => new Date(date).getFullYear();
-
     useEffect(() => {
         setLoading(true);
 
@@ -75,11 +73,7 @@ const SuggestedMovies = () => {
                     <div
                         key={m.code}
                         className="col-sm-12 col-md-6 col-lg-3 col-xl-2 d-flex">
-                        <SuggestedMovie
-                            movie={m}
-                            releaseYear={releaseYear}
-                            toggleModal={toggleModal}
-                        />
+                        <SuggestedMovie movie={m} toggleModal={toggleModal} />
                     </div>
                 ))}
             </div>
@@ -90,7 +84,7 @@ const SuggestedMovies = () => {
                 </ModalHeader>
                 <ModalBody>
                     Are you sure you want to watch {movie?.title} (
-                    {releaseYear(movie?.release)})?
+                    {movie?.release})?
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={selectMovie}>

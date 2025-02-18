@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Card, CardBody, CardSubtitle, CardText, CardTitle } from "reactstrap";
+import { Card, CardBody, CardSubtitle, CardTitle } from "reactstrap";
 
-const SuggestedMovie = ({ movie, releaseYear, toggleModal }) => {
+const SuggestedMovie = ({ movie, toggleModal }) => {
     const [movieData, setMovieData] = useState(null);
 
     useEffect(() => {
@@ -27,7 +27,7 @@ const SuggestedMovie = ({ movie, releaseYear, toggleModal }) => {
             <CardBody>
                 <CardTitle tag="h4">{movie.title}</CardTitle>
                 <CardSubtitle tag="h5" className="mb-2 text-muted">
-                    {releaseYear(movie.release)}
+                    {movie.release}
                 </CardSubtitle>
             </CardBody>
         </Card>
