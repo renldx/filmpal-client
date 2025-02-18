@@ -28,6 +28,11 @@ h1 {
 
 .suggested-movie {
     cursor: pointer;
+    filter: brightness(100%);
+}
+
+.suggested-movie:hover {
+    filter: brightness(90%);
 }
 
 .suggested-movie .poster {
