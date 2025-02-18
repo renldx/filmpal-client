@@ -10,7 +10,7 @@ body {
     padding-bottom: 1rem;
 }
 
-h1 {
+#logo {
     margin-left: 1rem;
 }
 
@@ -42,9 +42,10 @@ h1 {
     background-color: black;
 }
 
-.suggested-movie h4 {
-    height: 3.5rem;
+.suggested-movie .card-title {
+    white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .watched-movies tr {

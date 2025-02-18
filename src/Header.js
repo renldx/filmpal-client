@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Header = () => {
     return (
-        <h1>
+        <h1 id="logo">
             <FontAwesomeIcon icon={faFilm} /> FilmPal
         </h1>
     );
