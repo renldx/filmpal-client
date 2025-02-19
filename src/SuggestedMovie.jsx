@@ -27,7 +27,9 @@ const SuggestedMovie = ({ movie, toggleModal }) => {
         return <></>;
     } else if (
         !retriedFetch &&
-        (movieData.response === "False" || movie.title !== movieData.title)
+        (movieData.response === "False" ||
+            movie.title !== movieData.title ||
+            movieData.poster === "N/A")
     ) {
         retryFetch();
     } else if (movieData.response === "True") {
