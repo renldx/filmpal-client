@@ -15,6 +15,7 @@
     "scripts": {
         "start": "vite",
         "build": "vite build",
+        "test": "vitest",
         "serve": "vite preview"
     },
     "browserslist": {
@@ -30,13 +31,17 @@
         ]
     },
     "devDependencies": {
+        "@testing-library/jest-dom": "^6.6.3",
+        "@testing-library/react": "^16.2.0",
         "@trivago/prettier-plugin-sort-imports": "^5.2.2",
         "@vitejs/plugin-react": "^4.3.4",
         "eslint": "^8.0.0",
         "eslint-config-react-app": "^7.0.1",
+        "jsdom": "^26.0.0",
         "prettier": "3.4.2",
         "vite": "^6.1.0",
         "vite-plugin-eslint": "^1.8.1",
+        "vitest": "^3.0.6",
         "web-vitals": "^4.2.4"
     }
 }
