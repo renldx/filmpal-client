@@ -1,13 +1,68 @@
-body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
-        "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
-        "Helvetica Neue", sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+@import url("https://fonts.googleapis.com/css?family=Josefin+Sans");
+
+:root {
+    --spacer-small: 0.25rem;
+    --spacer-medium: 0.5rem;
 }
 
-code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-        monospace;
+body {
+    margin: 0;
+    padding-bottom: 1rem;
+    font-family: "Josefin Sans", serif !important;
+}
+
+#logo {
+    margin-left: 1rem;
+}
+
+.spinner-border {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+}
+
+.genre {
+    margin: var(--spacer-small);
+    text-transform: capitalize;
+    width: 10rem;
+}
+
+.suggested-movie {
+    cursor: pointer;
+    filter: brightness(100%);
+}
+
+.suggested-movie:hover {
+    filter: brightness(90%);
+}
+
+.suggested-movie .poster {
+    text-align: center;
+    aspect-ratio: 2 / 3;
+    object-fit: contain;
+    background-color: black;
+}
+
+.suggested-movie .card-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.watched-movies tr {
+    vertical-align: middle;
+}
+
+.watched-movies button,
+.watched-movie button {
+    margin: var(--spacer-small);
+}
+
+.watched-movie label:not(:first-child) {
+    margin-top: var(--spacer-medium);
+}
+
+.watched-movie .error {
+    color: red;
+    margin-left: var(--spacer-medium);
 }
