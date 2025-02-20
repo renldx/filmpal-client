@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
-const TestComp = ({ url }) => {
+const TestComp = () => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
         async function getData() {
             try {
-                const response = await fetch(url);
+                const response = await fetch("/api/genres");
 
                 if (!response.ok) {
                     throw new Error(`Response status: ${response.status}`);
