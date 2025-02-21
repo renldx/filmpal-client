@@ -20,7 +20,7 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 describe("Genres", () => {
-    test("component renders links", async () => {
+    test("component renders", async () => {
         render(<Genres />, { wrapper: BrowserRouter });
 
         await screen.findAllByRole("link");
@@ -38,7 +38,7 @@ describe("Genres", () => {
         }).toBeDefined();
     });
 
-    test("links redirect to suggested movies", async () => {
+    test("links redirect", async () => {
         render(
             <BrowserRouter>
                 <Genres />
