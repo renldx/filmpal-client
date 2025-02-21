@@ -114,7 +114,7 @@ const WatchedMovie = () => {
     };
 
     if (loading) {
-        return <Spinner></Spinner>;
+        return <Spinner />;
     }
 
     return (

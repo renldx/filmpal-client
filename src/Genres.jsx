@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button, Spinner } from "reactstrap";
+import { Link } from "react-router-dom";
+import { Spinner } from "reactstrap";
 
 const Genres = () => {
     const [loading, setLoading] = useState(false);
     const [genres, setGenres] = useState([]);
-
-    const navigate = useNavigate();
-    const pickGenre = (event) => {
-        navigate(`/new-movies/${event.target.value}`);
-    };
 
     useEffect(() => {
         setLoading(true);
@@ -40,21 +35,21 @@ const Genres = () => {
     };
 
     if (loading) {
-        return <Spinner></Spinner>;
+        return <Spinner />;
     }
 
     return (
         <div>
             {genres.map((genre) => (
-                <Button
+                <Link
                     key={genre}
                     value={genre}
-                    onClick={(event) => pickGenre(event)}
+                    to={`/new-movies/${genre}`}
                     size="lg"
-                    className="genre">
+                    className="btn btn-secondary genre">
                     <span className="icon">{getIcon(genre)}</span>{" "}
                     {genre.toLowerCase()}
-                </Button>
+                </Link>
             ))}
         </div>
     );

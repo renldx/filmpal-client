@@ -61,7 +61,7 @@ const SuggestedMovies = () => {
     }, [genre]);
 
     if (loading) {
-        return <Spinner></Spinner>;
+        return <Spinner />;
     }
 
     return (

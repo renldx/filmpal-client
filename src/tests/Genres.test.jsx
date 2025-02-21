@@ -1,14 +1,17 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { HttpResponse, http } from "msw";
 import { setupServer } from "msw/node";
-import { MemoryRouter } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { expect } from "vitest";
 
 import Genres from "../Genres";
 
+const mockGenres = ["GENRE1", "GENRE2", "GENRE3"];
+
 const server = setupServer(
     http.get("/api/genres", () => {
-        return HttpResponse.json(["GENRE1", "GENRE2", "GENRE3"]);
+        return HttpResponse.json(mockGenres);
     }),
 );
 
@@ -17,25 +20,45 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 describe("Genres", () => {
-    test("component renders buttons", async () => {
+    test("component renders links", async () => {
+        render(<Genres />, { wrapper: BrowserRouter });
+
+        await screen.findAllByRole("link");
+
+        expect(screen.getAllByRole("link"), {
+            name: new RegExp(mockGenres[0], "i"),
+        }).toBeDefined();
+
+        expect(screen.getAllByRole("link"), {
+            name: new RegExp(mockGenres[1], "i"),
+        }).toBeDefined();
+
+        expect(screen.getAllByRole("link"), {
+            name: new RegExp(mockGenres[2], "i"),
+        }).toBeDefined();
+    });
+
+    test("links redirect to suggested movies", async () => {
         render(
-            <MemoryRouter>
-                <Genres></Genres>
-            </MemoryRouter>,
+            <BrowserRouter>
+                <Genres />
+                <Routes>
+                    <Route exact path="/" element={<></>} />
+                    <Route exact path="/new-movies/:genre" element={<></>} />
+                </Routes>
+            </BrowserRouter>,
         );
 
-        await screen.findAllByRole("button");
+        const user = userEvent.setup();
 
-        expect(screen.getAllByRole("button"), {
-            name: /GENRE1/i,
+        await screen.findAllByRole("link");
+
+        expect(screen.getAllByRole("link"), {
+            name: new RegExp(mockGenres[0], "i"),
         }).toBeDefined();
 
-        expect(screen.getAllByRole("button"), {
-            name: /GENRE2/i,
-        }).toBeDefined();
+        await user.click(screen.getByText(new RegExp(mockGenres[0], "i")));
 
-        expect(screen.getAllByRole("button"), {
-            name: /GENRE3/i,
-        }).toBeDefined();
+        expect(window.location.pathname).toBe(`/new-movies/${mockGenres[0]}`);
     });
 });

@@ -59,7 +59,7 @@ const WatchedMovies = () => {
     };
 
     if (loading) {
-        return <Spinner></Spinner>;
+        return <Spinner />;
     }
 
     const movieList = movies.map((movie) => {
