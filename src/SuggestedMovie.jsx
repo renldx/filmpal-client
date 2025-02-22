@@ -47,7 +47,7 @@ const SuggestedMovie = ({ movie, toggleModal }) => {
                             movieData?.poster === "N/A" ? "" : movieData?.poster
                         }></img>
                     <CardBody>
-                        <CardTitle tag="h4">{movie.title}</CardTitle>
+                        <CardTitle tag="h4">{movieData.title}</CardTitle>
                         <CardSubtitle tag="h5" className="mb-2 text-muted">
                             {movieData.year}
                         </CardSubtitle>
