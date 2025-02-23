@@ -49,6 +49,7 @@ describe("SuggestedMovies", () => {
                 <Routes>
                     <Route>
                         <Route
+                            exact
                             path="/new-movies/:genre"
                             element={<SuggestedMovies />}
                         />

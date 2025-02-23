@@ -120,7 +120,7 @@ const WatchedMovie = () => {
     return (
         <Container className="watched-movie">
             <h2>{code ? "Edit" : "Add"} Movie</h2>
-            <Form onSubmit={handleSubmit}>
+            <Form aria-label="form" onSubmit={handleSubmit}>
                 <FormGroup>
                     <Label for="title">
                         Title
