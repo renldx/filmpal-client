@@ -6,30 +6,15 @@ import { BrowserRouter } from "react-router-dom";
 import { describe, expect, vi } from "vitest";
 
 import WatchedMovies from "../WatchedMovies";
+import mocks from "./mocks";
 
-const mockWatchedMovies = [
-    {
-        title: "MockMovie1",
-        release: "2001",
-        code: "MockMovie1_2001",
-    },
-    {
-        title: "MockMovie2",
-        release: "2002",
-        code: "MockMovie2_2002",
-    },
-    {
-        title: "MockMovie3",
-        release: "2003",
-        code: "MockMovie3_2003",
-    },
-];
+const mockWatchedMovie = mocks.movies[0];
 
 const mockUseNavigate = vi.fn();
 
 const server = setupServer(
     http.get("/api/watched/movies", () => {
-        return HttpResponse.json(mockWatchedMovies);
+        return HttpResponse.json(mocks.movies);
     }),
 );
 
@@ -52,9 +37,12 @@ describe("WatchedMovies", () => {
     test("component renders", async () => {
         render(<WatchedMovies />, { wrapper: BrowserRouter });
 
-        await screen.findAllByRole("heading");
-
-        expect(screen.getByRole("heading", { level: 2 })).toBeInTheDocument();
+        expect(
+            await screen.findByRole("heading", {
+                level: 2,
+                name: "Watch History",
+            }),
+        ).toBeInTheDocument();
 
         expect(
             screen.getByRole("rowheader", { name: "Title" }),
@@ -69,15 +57,16 @@ describe("WatchedMovies", () => {
         ).toBeInTheDocument();
 
         expect(
-            screen.getByRole("cell", { name: mockWatchedMovies[0].title }),
+            screen.getByRole("cell", { name: mockWatchedMovie.title }),
         ).toBeInTheDocument();
 
         expect(
-            screen.getByRole("cell", { name: mockWatchedMovies[0].release }),
+            screen.getByRole("cell", { name: mockWatchedMovie.release }),
         ).toBeInTheDocument();
 
         expect(screen.getAllByRole("button", { name: "Edit" })).toBeDefined();
         expect(screen.getAllByRole("button", { name: "Delete" })).toBeDefined();
+
         expect(screen.getByRole("button", { name: "Add" })).toBeInTheDocument();
     });
 
@@ -86,9 +75,11 @@ describe("WatchedMovies", () => {
 
         const user = userEvent.setup();
 
-        await screen.findByRole("button", { name: "Add" });
+        const addButton = await screen.findByRole("button", { name: "Add" });
 
-        await user.click(screen.getByRole("button", { name: "Add" }));
+        expect(addButton).toBeInTheDocument();
+
+        await user.click(addButton);
 
         expect(mockUseNavigate).toHaveBeenCalledWith("add");
     });
@@ -99,7 +90,7 @@ describe("WatchedMovies", () => {
         const user = userEvent.setup();
 
         const firstRow = await screen.findByRole("row", {
-            name: /MockMovie1/i,
+            name: new RegExp(mockWatchedMovie.title, "i"),
         });
 
         const firstEditButton = await within(firstRow).findByRole("button", {
@@ -109,7 +100,7 @@ describe("WatchedMovies", () => {
         await user.click(firstEditButton);
 
         expect(mockUseNavigate).toHaveBeenCalledWith(
-            `edit/${mockWatchedMovies[0].code}`,
+            `edit/${mockWatchedMovie.code}`,
         );
     });
 
@@ -119,7 +110,7 @@ describe("WatchedMovies", () => {
         const user = userEvent.setup();
 
         const firstRow = await screen.findByRole("row", {
-            name: new RegExp(mockWatchedMovies[0].title, "i"),
+            name: new RegExp(mockWatchedMovie.title, "i"),
         });
 
         const firstDeleteButton = await within(firstRow).findByRole("button", {
@@ -128,15 +119,13 @@ describe("WatchedMovies", () => {
 
         await user.click(firstDeleteButton);
 
-        await screen.findByText("Confirm Selected Movie");
-
-        expect(screen.getByText("Confirm Selected Movie")).toBeInTheDocument();
+        expect(screen.findByText(/Confirm Selected Movie/i)).toBeDefined();
 
         expect(
             screen.getByText(/Are you sure you want to delete/i),
         ).toBeInTheDocument();
 
-        expect(screen.getAllByRole("button", { name: "Yes" })).toBeDefined();
-        expect(screen.getAllByRole("button", { name: "No" })).toBeDefined();
+        expect(screen.getByRole("button", { name: "Yes" })).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: "No" })).toBeInTheDocument();
     });
 });

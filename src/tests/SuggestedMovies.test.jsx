@@ -5,26 +5,9 @@ import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, vi } from "vitest";
 
 import SuggestedMovies from "../SuggestedMovies";
+import mocks from "./mocks";
 
-const mockGenre = "GENRE1";
-
-const mockSuggestedMovies = [
-    {
-        title: "MockMovie1",
-        release: "2001",
-        code: "MockMovie1_2001",
-    },
-    {
-        title: "MockMovie2",
-        release: "2002",
-        code: "MockMovie2_2002",
-    },
-    {
-        title: "MockMovie3",
-        release: "2003",
-        code: "MockMovie3_2003",
-    },
-];
+const mockGenre = mocks.genres[0];
 
 vi.mock("../SuggestedMovie", () => ({
     default: vi.fn(),
@@ -32,7 +15,7 @@ vi.mock("../SuggestedMovie", () => ({
 
 const server = setupServer(
     http.get(`/api/suggested/${mockGenre}`, () => {
-        return HttpResponse.json(mockSuggestedMovies);
+        return HttpResponse.json(mocks.movies);
     }),
 );
 
@@ -60,8 +43,19 @@ describe("SuggestedMovies", () => {
 
         await screen.findAllByRole("heading");
 
-        expect(screen.getByRole("heading", { level: 2 })).toBeInTheDocument();
-        expect(screen.getByRole("heading", { level: 3 })).toBeInTheDocument();
+        expect(
+            screen.getByRole("heading", {
+                level: 2,
+                name: /Movie Suggestions/i,
+            }),
+        ).toBeInTheDocument();
+
+        expect(
+            screen.getByRole("heading", {
+                level: 3,
+                name: /Pick a movie:/i,
+            }),
+        ).toBeInTheDocument();
 
         expect(spy).toHaveBeenCalledWith(`/api/suggested/${mockGenre}`);
     });

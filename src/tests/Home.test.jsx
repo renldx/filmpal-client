@@ -13,7 +13,18 @@ describe("Home", () => {
 
         await screen.findAllByRole("heading");
 
-        expect(screen.getByRole("heading", { level: 2 })).toBeInTheDocument();
-        expect(screen.getByRole("heading", { level: 3 })).toBeInTheDocument();
+        expect(
+            screen.getByRole("heading", {
+                level: 2,
+                name: /Genre Suggestions/i,
+            }),
+        ).toBeInTheDocument();
+
+        expect(
+            screen.getByRole("heading", {
+                level: 3,
+                name: /Pick a genre:/i,
+            }),
+        ).toBeInTheDocument();
     });
 });

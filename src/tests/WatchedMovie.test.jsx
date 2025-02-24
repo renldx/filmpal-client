@@ -6,12 +6,9 @@ import { BrowserRouter, MemoryRouter, Route, Routes } from "react-router-dom";
 import { expect, test, vi } from "vitest";
 
 import WatchedMovie from "../WatchedMovie";
+import mocks from "./mocks";
 
-const mockMovie = {
-    title: "MockMovie",
-    release: "2001",
-    code: "MockMovie_2001",
-};
+const mockMovie = mocks.movies[0];
 
 const mockUseNavigate = vi.fn();
 
@@ -56,9 +53,9 @@ describe("WatchedMovie", () => {
     test("component renders without existing movie", async () => {
         render(<WatchedMovie />, { wrapper: BrowserRouter });
 
-        await screen.findByRole("heading");
-
-        expect(screen.getByRole("heading", { level: 2 })).toBeInTheDocument();
+        expect(
+            await screen.findByRole("heading", { level: 2 }),
+        ).toBeInTheDocument();
 
         expect(screen.getByLabelText("Title")).toHaveValue("");
         expect(screen.getByLabelText("Release")).toHaveValue(null);
@@ -68,6 +65,8 @@ describe("WatchedMovie", () => {
     });
 
     test("component renders with existing movie", async () => {
+        const mockMovie = mocks.movies[0];
+
         render(
             <MemoryRouter
                 initialEntries={[`/old-movies/edit/${mockMovie.code}`]}>
@@ -81,12 +80,12 @@ describe("WatchedMovie", () => {
             </MemoryRouter>,
         );
 
-        await screen.findByRole("heading");
+        expect(
+            await screen.findByRole("heading", { level: 2 }),
+        ).toBeInTheDocument();
 
-        expect(screen.getByRole("heading", { level: 2 })).toBeInTheDocument();
-
-        expect(screen.getByLabelText("Title")).toHaveValue("MockMovie");
-        expect(screen.getByLabelText("Release")).toHaveValue(2001);
+        expect(screen.getByLabelText("Title")).toHaveValue(mockMovie.title);
+        expect(screen.getByLabelText("Release")).toHaveValue(mockMovie.release);
 
         expect(screen.getByRole("button", { name: "Confirm" }));
         expect(screen.getByRole("button", { name: "Back" }));
@@ -97,9 +96,9 @@ describe("WatchedMovie", () => {
 
         const user = userEvent.setup();
 
-        await screen.findByRole("button", { name: "Back" });
+        const button = await screen.findByRole("button", { name: "Back" });
 
-        await user.click(screen.getByRole("button", { name: "Back" }));
+        await user.click(button);
 
         expect(mockUseNavigate).toHaveBeenCalledWith(-1);
     });
@@ -111,8 +110,15 @@ describe("WatchedMovie", () => {
 
         await screen.findByRole("heading");
 
-        await user.type(screen.getByLabelText("Title"), "xyz");
-        await user.type(screen.getByLabelText("Release"), "0000");
+        await user.type(
+            screen.getByLabelText("Title"),
+            mocks.invalidMovie.title,
+        );
+
+        await user.type(
+            screen.getByLabelText("Release"),
+            mocks.invalidMovie.release.toString(),
+        );
 
         await user.click(screen.getByRole("button", { name: "Confirm" }));
 
@@ -127,7 +133,11 @@ describe("WatchedMovie", () => {
         await screen.findByRole("form");
 
         await user.type(screen.getByLabelText("Title"), mockMovie.title);
-        await user.type(screen.getByLabelText("Release"), mockMovie.release);
+
+        await user.type(
+            screen.getByLabelText("Release"),
+            mockMovie.release.toString(),
+        );
 
         await user.click(screen.getByRole("button", { name: "Confirm" }));
 
@@ -153,7 +163,11 @@ describe("WatchedMovie", () => {
         await screen.findByRole("form");
 
         await user.type(screen.getByLabelText("Title"), mockMovie.title);
-        await user.type(screen.getByLabelText("Release"), mockMovie.release);
+
+        await user.type(
+            screen.getByLabelText("Release"),
+            mockMovie.release.toString(),
+        );
 
         await user.click(screen.getByRole("button", { name: "Confirm" }));
 

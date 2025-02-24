@@ -6,12 +6,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { expect } from "vitest";
 
 import Genres from "../Genres";
-
-const mockGenres = ["GENRE1", "GENRE2", "GENRE3"];
+import mocks from "./mocks";
 
 const server = setupServer(
     http.get("/api/genres", () => {
-        return HttpResponse.json(mockGenres);
+        return HttpResponse.json(mocks.genres);
     }),
 );
 
@@ -26,19 +25,21 @@ describe("Genres", () => {
         await screen.findAllByRole("link");
 
         expect(screen.getAllByRole("link"), {
-            name: new RegExp(mockGenres[0], "i"),
+            name: new RegExp(mocks.genres[0], "i"),
         }).toBeDefined();
 
         expect(screen.getAllByRole("link"), {
-            name: new RegExp(mockGenres[1], "i"),
+            name: new RegExp(mocks.genres[1], "i"),
         }).toBeDefined();
 
         expect(screen.getAllByRole("link"), {
-            name: new RegExp(mockGenres[2], "i"),
+            name: new RegExp(mocks.genres[2], "i"),
         }).toBeDefined();
     });
 
     test("links navigate", async () => {
+        const mockGenre = mocks.genres[0];
+
         render(
             <BrowserRouter>
                 <Genres />
@@ -53,12 +54,14 @@ describe("Genres", () => {
 
         await screen.findAllByRole("link");
 
-        expect(screen.getAllByRole("link"), {
-            name: new RegExp(mockGenres[0], "i"),
-        }).toBeDefined();
+        const link = screen.getByRole("link", {
+            name: new RegExp(mockGenre, "i"),
+        });
 
-        await user.click(screen.getByText(new RegExp(mockGenres[0], "i")));
+        expect(link).toBeInTheDocument();
 
-        expect(window.location.pathname).toBe(`/new-movies/${mockGenres[0]}`);
+        await user.click(link);
+
+        expect(window.location.pathname).toBe(`/new-movies/${mockGenre}`);
     });
 });
