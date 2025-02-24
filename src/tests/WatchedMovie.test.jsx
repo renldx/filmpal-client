@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { HttpResponse, http } from "msw";
 import { setupServer } from "msw/node";
 import { BrowserRouter, MemoryRouter, Route, Routes } from "react-router-dom";
-import { expect, vi } from "vitest";
+import { expect, test, vi } from "vitest";
 
 import WatchedMovie from "../WatchedMovie";
 
@@ -43,6 +43,10 @@ describe("WatchedMovie", () => {
         await screen.findByRole("heading");
 
         expect(screen.getByRole("heading", { level: 2 })).toBeInTheDocument();
+
+        expect(screen.getByLabelText("Title")).toHaveValue("");
+        expect(screen.getByLabelText("Release")).toHaveValue(null);
+
         expect(screen.getByRole("button", { name: "Confirm" }));
         expect(screen.getByRole("button", { name: "Back" }));
     });
@@ -61,13 +65,15 @@ describe("WatchedMovie", () => {
             </MemoryRouter>,
         );
 
-        await screen.findByRole("form");
+        await screen.findByRole("heading");
 
-        expect(screen.getByLabelText("Title")).toBeInTheDocument();
-        expect(screen.getByDisplayValue("MockMovie")).toBeInTheDocument();
+        expect(screen.getByRole("heading", { level: 2 })).toBeInTheDocument();
 
-        expect(screen.getByLabelText("Release")).toBeInTheDocument();
-        expect(screen.getByDisplayValue("2001")).toBeInTheDocument();
+        expect(screen.getByLabelText("Title")).toHaveValue("MockMovie");
+        expect(screen.getByLabelText("Release")).toHaveValue(2001);
+
+        expect(screen.getByRole("button", { name: "Confirm" }));
+        expect(screen.getByRole("button", { name: "Back" }));
     });
 
     test("back button redirects", async () => {
@@ -89,6 +95,8 @@ describe("WatchedMovie", () => {
 
         expect(mockUseNavigate).toHaveBeenCalledWith(-1);
     });
+
+    //test("form validates", async () => {});
 
     //test("creates movie", async () => {});
 
