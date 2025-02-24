@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { HttpResponse, http } from "msw";
 import { setupServer } from "msw/node";
 import { BrowserRouter, MemoryRouter, Route, Routes } from "react-router-dom";
-import { expect } from "vitest";
+import { expect, vi } from "vitest";
 
 import WatchedMovie from "../WatchedMovie";
 
@@ -12,6 +12,8 @@ const mockMovie = {
     release: "2001",
     code: "MockMovie_2001",
 };
+
+const mockUseNavigate = vi.fn();
 
 const server = setupServer(
     http.get("/api/watched/movie", ({ request }) => {
@@ -69,24 +71,15 @@ describe("WatchedMovie", () => {
     });
 
     test("back button redirects", async () => {
-        render(
-            <MemoryRouter
-                initialEntries={["/old-movies", "/old-movies/add"]}
-                initialIndex={1}>
-                <Routes>
-                    <Route
-                        exact
-                        path="/old-movies"
-                        element={<>Watched Movies</>}
-                    />
-                    <Route
-                        exact
-                        path="/old-movies/add"
-                        element={<WatchedMovie />}
-                    />
-                </Routes>
-            </MemoryRouter>,
-        );
+        vi.mock(import("react-router-dom"), async (importOriginal) => {
+            const actual = await importOriginal();
+            return {
+                ...actual,
+                useNavigate: () => mockUseNavigate,
+            };
+        });
+
+        render(<WatchedMovie />, { wrapper: BrowserRouter });
 
         const user = userEvent.setup();
 
@@ -94,7 +87,7 @@ describe("WatchedMovie", () => {
 
         await user.click(screen.getByRole("button", { name: "Back" }));
 
-        expect(screen.getByText("Watched Movies")).toBeInTheDocument();
+        expect(mockUseNavigate).toHaveBeenCalledWith(-1);
     });
 
     //test("creates movie", async () => {});
