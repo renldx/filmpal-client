@@ -28,7 +28,7 @@ const SuggestedMovies = () => {
         setModal(!modal);
     };
 
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     const selectMovie = () => {
         (async () => {

@@ -27,8 +27,13 @@ const server = setupServer(
     http.post("/api/watched/movie", () => {
         return HttpResponse.json(mockMovie);
     }),
-    http.put("/api/watched/movie", () => {
-        return HttpResponse.json(mockMovie);
+    http.put("/api/watched/movie", ({ request }) => {
+        const url = new URL(request.url);
+        const code = url.searchParams.get("code");
+
+        if (code === mockMovie.code) {
+            return HttpResponse.json(mockMovie);
+        }
     }),
 );
 
@@ -87,7 +92,7 @@ describe("WatchedMovie", () => {
         expect(screen.getByRole("button", { name: "Back" }));
     });
 
-    test("back button redirects", async () => {
+    test("back button navigates", async () => {
         render(<WatchedMovie />, { wrapper: BrowserRouter });
 
         const user = userEvent.setup();
@@ -114,7 +119,7 @@ describe("WatchedMovie", () => {
         expect(screen.getByLabelText("Release")).toBeInvalid();
     });
 
-    test("creates movie", async () => {
+    test("form creates movie", async () => {
         render(<WatchedMovie />, { wrapper: BrowserRouter });
 
         const user = userEvent.setup();
@@ -129,7 +134,7 @@ describe("WatchedMovie", () => {
         expect(mockUseNavigate).toHaveBeenCalledWith("/old-movies");
     });
 
-    test("updates movie", async () => {
+    test("form updates movie", async () => {
         render(
             <MemoryRouter
                 initialEntries={[`/old-movies/edit/${mockMovie.code}`]}>

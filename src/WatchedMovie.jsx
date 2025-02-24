@@ -21,7 +21,7 @@ const WatchedMovie = () => {
         errors: {},
     });
 
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (code) {

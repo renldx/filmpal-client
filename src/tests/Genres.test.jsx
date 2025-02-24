@@ -38,7 +38,7 @@ describe("Genres", () => {
         }).toBeDefined();
     });
 
-    test("links redirect", async () => {
+    test("links navigate", async () => {
         render(
             <BrowserRouter>
                 <Genres />

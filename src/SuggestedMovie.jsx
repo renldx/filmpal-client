@@ -11,7 +11,7 @@ const SuggestedMovie = ({ movie, toggleModal }) => {
 
     const retryFetch = () => {
         setRetriedFetch(true);
-        let codeWithoutYear = movie.code.slice(0, -4) + "????";
+        const codeWithoutYear = movie.code.slice(0, -4) + "????";
         fetchMovieDetails(codeWithoutYear);
     };
 

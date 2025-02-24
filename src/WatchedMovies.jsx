@@ -25,7 +25,7 @@ const WatchedMovies = () => {
 
     const releaseYear = (date) => new Date(date).getFullYear();
 
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     useEffect(() => {
         setLoading(true);
@@ -50,7 +50,7 @@ const WatchedMovies = () => {
                 "Content-Type": "application/json",
             },
         }).then(() => {
-            let updatedMovies = [...movies].filter(
+            const updatedMovies = [...movies].filter(
                 (i) => i.code !== movie.code,
             );
             setMovies(updatedMovies);
@@ -89,9 +89,9 @@ const WatchedMovies = () => {
             <Table>
                 <thead>
                     <tr>
-                        <th>Title</th>
-                        <th>Release</th>
-                        <th>Actions</th>
+                        <th scope="row">Title</th>
+                        <th scope="row">Release</th>
+                        <th scope="row">Actions</th>
                     </tr>
                 </thead>
                 <tbody>{movieList}</tbody>
