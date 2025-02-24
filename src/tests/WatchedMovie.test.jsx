@@ -32,7 +32,18 @@ const server = setupServer(
     }),
 );
 
-beforeAll(() => server.listen());
+beforeAll(() => {
+    vi.mock(import("react-router-dom"), async (importOriginal) => {
+        const actual = await importOriginal();
+        return {
+            ...actual,
+            useNavigate: () => mockUseNavigate,
+        };
+    });
+
+    server.listen();
+});
+
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
@@ -77,14 +88,6 @@ describe("WatchedMovie", () => {
     });
 
     test("back button redirects", async () => {
-        vi.mock(import("react-router-dom"), async (importOriginal) => {
-            const actual = await importOriginal();
-            return {
-                ...actual,
-                useNavigate: () => mockUseNavigate,
-            };
-        });
-
         render(<WatchedMovie />, { wrapper: BrowserRouter });
 
         const user = userEvent.setup();
@@ -96,9 +99,59 @@ describe("WatchedMovie", () => {
         expect(mockUseNavigate).toHaveBeenCalledWith(-1);
     });
 
-    //test("form validates", async () => {});
+    test("form validates", async () => {
+        render(<WatchedMovie />, { wrapper: BrowserRouter });
 
-    //test("creates movie", async () => {});
+        const user = userEvent.setup();
 
-    //test("updates movie", async () => {});
+        await screen.findByRole("heading");
+
+        await user.type(screen.getByLabelText("Title"), "xyz");
+        await user.type(screen.getByLabelText("Release"), "0000");
+
+        await user.click(screen.getByRole("button", { name: "Confirm" }));
+
+        expect(screen.getByLabelText("Release")).toBeInvalid();
+    });
+
+    test("creates movie", async () => {
+        render(<WatchedMovie />, { wrapper: BrowserRouter });
+
+        const user = userEvent.setup();
+
+        await screen.findByRole("form");
+
+        await user.type(screen.getByLabelText("Title"), mockMovie.title);
+        await user.type(screen.getByLabelText("Release"), mockMovie.release);
+
+        await user.click(screen.getByRole("button", { name: "Confirm" }));
+
+        expect(mockUseNavigate).toHaveBeenCalledWith("/old-movies");
+    });
+
+    test("updates movie", async () => {
+        render(
+            <MemoryRouter
+                initialEntries={[`/old-movies/edit/${mockMovie.code}`]}>
+                <Routes>
+                    <Route
+                        exact
+                        path="/old-movies/edit/:code"
+                        element={<WatchedMovie />}
+                    />
+                </Routes>
+            </MemoryRouter>,
+        );
+
+        const user = userEvent.setup();
+
+        await screen.findByRole("form");
+
+        await user.type(screen.getByLabelText("Title"), mockMovie.title);
+        await user.type(screen.getByLabelText("Release"), mockMovie.release);
+
+        await user.click(screen.getByRole("button", { name: "Confirm" }));
+
+        expect(mockUseNavigate).toHaveBeenCalledWith("/old-movies");
+    });
 });
