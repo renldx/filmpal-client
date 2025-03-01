@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Spinner } from "reactstrap";
 
+import authHeader from "./services/authHeader";
+
 const Genres = () => {
     const [loading, setLoading] = useState(false);
     const [genres, setGenres] = useState([]);
@@ -9,7 +11,10 @@ const Genres = () => {
     useEffect(() => {
         setLoading(true);
 
-        fetch("/api/genres")
+        fetch("/api/genres", {
+            method: "GET",
+            headers: authHeader(),
+        })
             .then((response) => response.json())
             .then((data) => {
                 setGenres(data);

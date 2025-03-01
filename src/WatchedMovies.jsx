@@ -11,6 +11,8 @@ import {
     Table,
 } from "reactstrap";
 
+import authHeader from "./services/authHeader";
+
 const WatchedMovies = () => {
     const [loading, setLoading] = useState(false);
     const [movies, setMovies] = useState([]);
@@ -30,7 +32,10 @@ const WatchedMovies = () => {
     useEffect(() => {
         setLoading(true);
 
-        fetch("/api/watched/movies")
+        fetch("/api/watched/movies", {
+            method: "GET",
+            headers: authHeader(),
+        })
             .then((response) => response.json())
             .then((data) => {
                 setMovies(data);

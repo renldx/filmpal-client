@@ -53,6 +53,8 @@ body {
     vertical-align: middle;
 }
 
+.signup button,
+.signin button,
 .watched-movies button,
 .watched-movie button {
     margin: var(--spacer-small);

@@ -13,6 +13,7 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import SuggestedMovie from "./SuggestedMovie";
+import authHeader from "./services/authHeader";
 
 const SuggestedMovies = () => {
     const { genre } = useParams();
@@ -52,7 +53,10 @@ const SuggestedMovies = () => {
     useEffect(() => {
         setLoading(true);
 
-        fetch(`/api/suggested/${genre}`)
+        fetch(`/api/suggested/${genre}`, {
+            method: "GET",
+            headers: authHeader(),
+        })
             .then((response) => response.json())
             .then((data) => {
                 setMovies(data);

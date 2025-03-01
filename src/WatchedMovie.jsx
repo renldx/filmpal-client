@@ -10,6 +10,8 @@ import {
     Spinner,
 } from "reactstrap";
 
+import authHeader from "./services/authHeader";
+
 const WatchedMovie = () => {
     const { code } = useParams();
 
@@ -27,7 +29,10 @@ const WatchedMovie = () => {
         if (code) {
             setLoading(true);
 
-            fetch(`/api/watched/movie?code=${code}`)
+            fetch(`/api/watched/movie?code=${code}`, {
+                method: "GET",
+                headers: authHeader(),
+            })
                 .then((response) => response.json())
                 .then((data) => {
                     setFormData({

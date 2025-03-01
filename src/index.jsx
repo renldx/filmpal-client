@@ -4,15 +4,11 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 
 import App from "./App";
-import Header from "./Header";
-import NavigationMenu from "./NavigationMenu";
 import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     <React.StrictMode>
-        <NavigationMenu />
-        <Header />
         <App />
     </React.StrictMode>,
 );
