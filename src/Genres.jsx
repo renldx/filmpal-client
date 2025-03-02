@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Spinner } from "reactstrap";
 
-import { useFetch } from "./hooks/useFetch";
+import { useFetch } from "./helpers/fetchHelpers";
 
 const Genres = () => {
     const { isPending: isLoading, data: genres } = useFetch(

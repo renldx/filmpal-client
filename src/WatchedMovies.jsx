@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
     Button,
@@ -11,12 +11,9 @@ import {
     Table,
 } from "reactstrap";
 
-import authService from "./services/authService";
+import { fetchRequest, useFetch } from "./helpers/fetchHelpers";
 
 const WatchedMovies = () => {
-    const [loading, setLoading] = useState(false);
-    const [movies, setMovies] = useState([]);
-
     const [modal, setModal] = useState(false);
     const [movie, setMovie] = useState(null);
 
@@ -29,43 +26,33 @@ const WatchedMovies = () => {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        setLoading(true);
-
-        fetch("/api/watched/movies", {
-            method: "GET",
-            headers: { Authorization: authService.getAuthHeaderValue() },
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                setMovies(data);
-                setLoading(false);
-            });
-    }, []);
+    const { isPending: isLoading, data: movies } = useFetch(
+        "GET",
+        "/api/watched/movies",
+        true,
+    );
 
     const updateMovie = (event, code) => {
         navigate(`edit/${code}`);
     };
 
     const deleteMovie = async () => {
-        await fetch(`/api/watched/movie?code=${movie.code}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: authService.getAuthHeaderValue(),
-            },
-        });
+        await fetchRequest(
+            "DELETE",
+            `/api/watched/movie?code=${movie.code}`,
+            true,
+        );
 
         const updatedMovies = [...movies].filter((i) => i.code !== movie.code);
-        setMovies(updatedMovies);
+        //setMovies(updatedMovies);
         toggleModal();
     };
 
-    if (loading) {
+    if (isLoading) {
         return <Spinner />;
     }
 
-    const movieList = movies.map((movie) => {
+    const movieList = movies?.map((movie) => {
         return (
             <tr key={movie.code}>
                 <td>{movie.title}</td>

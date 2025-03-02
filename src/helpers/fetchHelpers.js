@@ -3,6 +3,16 @@ import { useNavigate } from "react-router-dom";
 
 import authService from "../services/authService";
 
+export const fetchRequest = (method, url, secure, body) =>
+    fetch(url, {
+        method: method,
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: secure ? authService.getAuthHeaderValue() : null,
+        },
+        body: method === "GET" ? null : JSON.stringify(body),
+    });
+
 export const useFetch = (method, url, secure, body, callback) => {
     const [isPending, setIsPending] = useState(false);
     const [data, setData] = useState(null);
@@ -15,16 +25,7 @@ export const useFetch = (method, url, secure, body, callback) => {
             setIsPending(true);
 
             try {
-                const request = await fetch(url, {
-                    method: method,
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: secure
-                            ? authService.getAuthHeaderValue()
-                            : null,
-                    },
-                    body: method === "GET" ? null : JSON.stringify(body),
-                });
+                const request = await fetchRequest(method, url, secure, body);
 
                 if (!request.ok) {
                     if (request.status === 401) {

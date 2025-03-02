@@ -10,12 +10,12 @@ import {
     Spinner,
 } from "reactstrap";
 
-import authService from "./services/authService";
+import { fetchRequest } from "./helpers/fetchHelpers";
 
 const WatchedMovie = () => {
     const { code } = useParams();
 
-    const [loading, setLoading] = useState(false);
+    const [isLoading, setLoading] = useState(false);
 
     const [formData, setFormData] = useState({
         title: "",
@@ -29,10 +29,7 @@ const WatchedMovie = () => {
         if (code) {
             setLoading(true);
 
-            fetch(`/api/watched/movie?code=${code}`, {
-                method: "GET",
-                headers: { Authorization: authService.getAuthHeaderValue() },
-            })
+            fetchRequest("GET", `/api/watched/movie?code=${code}`, true)
                 .then((response) => response.json())
                 .then((data) => {
                     setFormData({
@@ -83,38 +80,24 @@ const WatchedMovie = () => {
     };
 
     const createMovie = async () => {
-        await fetch("/api/watched/movie", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: authService.getAuthHeaderValue(),
-            },
-            body: JSON.stringify({
-                title: formData.title,
-                release: formData.release,
-            }),
+        await fetchRequest("POST", "/api/watched/movie", true, {
+            title: formData.title,
+            release: formData.release,
         });
 
         navigate("/old-movies");
     };
 
     const updateMovie = async () => {
-        await fetch(`/api/watched/movie?code=${code}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: authService.getAuthHeaderValue(),
-            },
-            body: JSON.stringify({
-                title: formData.title,
-                release: formData.release,
-            }),
+        await fetchRequest("PUT", `/api/watched/movie?code=${code}`, true, {
+            title: formData.title,
+            release: formData.release,
         });
 
         navigate("/old-movies");
     };
 
-    if (loading) {
+    if (isLoading) {
         return <Spinner />;
     }
 
