@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
     Button,
@@ -13,13 +13,11 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import SuggestedMovie from "./SuggestedMovie";
+import { useFetch } from "./hooks/useFetch";
 import authService from "./services/authService";
 
 const SuggestedMovies = () => {
     const { genre } = useParams();
-
-    const [loading, setLoading] = useState(false);
-    const [movies, setMovies] = useState([]);
 
     const [modal, setModal] = useState(false);
     const [movie, setMovie] = useState(null);
@@ -30,6 +28,12 @@ const SuggestedMovies = () => {
     };
 
     const navigate = useNavigate();
+
+    const { isPending: isLoading, data: movies } = useFetch(
+        "GET",
+        `/api/suggested/${genre}`,
+        true,
+    );
 
     const selectMovie = async () => {
         await fetch("/api/watched/movie", {
@@ -48,21 +52,7 @@ const SuggestedMovies = () => {
         navigate("/");
     };
 
-    useEffect(() => {
-        setLoading(true);
-
-        fetch(`/api/suggested/${genre}`, {
-            method: "GET",
-            headers: { Authorization: authService.getAuthHeaderValue() },
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                setMovies(data);
-                setLoading(false);
-            });
-    }, [genre]);
-
-    if (loading) {
+    if (isLoading) {
         return <Spinner />;
     }
 
@@ -71,7 +61,7 @@ const SuggestedMovies = () => {
             <h2>Movie Suggestions</h2>
             <h3>Pick a movie:</h3>
             <div className="row gy-3">
-                {movies.map((m) => (
+                {movies?.map((m) => (
                     <SuggestedMovie
                         key={m.code}
                         movie={m}

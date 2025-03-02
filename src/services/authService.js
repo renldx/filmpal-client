@@ -17,7 +17,6 @@ class AuthService {
         await fetch("/api/auth/signup", {
             method: "POST",
             headers: {
-                Accept: "application/json",
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
@@ -32,7 +31,6 @@ class AuthService {
         const request = await fetch("/api/auth/signin", {
             method: "POST",
             headers: {
-                Accept: "application/json",
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({

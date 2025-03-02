@@ -8,6 +8,7 @@ const Genres = () => {
     const { isPending: isLoading, data: genres } = useFetch(
         "GET",
         "/api/genres",
+        true,
     );
 
     const getIcon = (genre) => {

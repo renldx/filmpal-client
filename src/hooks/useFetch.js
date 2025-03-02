@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import authService from "../services/authService";
 
-export const useFetch = (method, url, body) => {
+export const useFetch = (method, url, secure, body, callback) => {
     const [isPending, setIsPending] = useState(false);
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
@@ -19,7 +19,9 @@ export const useFetch = (method, url, body) => {
                     method: method,
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: authService.getAuthHeaderValue(),
+                        Authorization: secure
+                            ? authService.getAuthHeaderValue()
+                            : null,
                     },
                     body: method === "GET" ? null : JSON.stringify(body),
                 });
@@ -37,6 +39,10 @@ export const useFetch = (method, url, body) => {
                 setData(response);
 
                 setError(null);
+
+                if (callback) {
+                    callback();
+                }
             } catch (error) {
                 setError(error);
             } finally {
@@ -45,7 +51,7 @@ export const useFetch = (method, url, body) => {
         };
 
         fetchData();
-    }, [method, url, body, navigate]);
+    }, [method, url, secure, body, navigate, callback]);
 
     return { isPending, data };
 };
