@@ -10,7 +10,7 @@ import {
     Spinner,
 } from "reactstrap";
 
-import authHeader from "./services/authHeader";
+import authService from "./services/authService";
 
 const WatchedMovie = () => {
     const { code } = useParams();
@@ -31,7 +31,7 @@ const WatchedMovie = () => {
 
             fetch(`/api/watched/movie?code=${code}`, {
                 method: "GET",
-                headers: authHeader(),
+                headers: { Authorization: authService.getAuthHeaderValue() },
             })
                 .then((response) => response.json())
                 .then((data) => {
@@ -82,40 +82,36 @@ const WatchedMovie = () => {
         return Object.keys(errors).length === 0;
     };
 
-    const createMovie = () => {
-        (async () => {
-            await fetch("/api/watched/movie", {
-                method: "POST",
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    title: formData.title,
-                    release: formData.release,
-                }),
-            });
+    const createMovie = async () => {
+        await fetch("/api/watched/movie", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: authService.getAuthHeaderValue(),
+            },
+            body: JSON.stringify({
+                title: formData.title,
+                release: formData.release,
+            }),
+        });
 
-            navigate("/old-movies");
-        })();
+        navigate("/old-movies");
     };
 
-    const updateMovie = () => {
-        (async () => {
-            await fetch(`/api/watched/movie?code=${code}`, {
-                method: "PUT",
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    title: formData.title,
-                    release: formData.release,
-                }),
-            });
+    const updateMovie = async () => {
+        await fetch(`/api/watched/movie?code=${code}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: authService.getAuthHeaderValue(),
+            },
+            body: JSON.stringify({
+                title: formData.title,
+                release: formData.release,
+            }),
+        });
 
-            navigate("/old-movies");
-        })();
+        navigate("/old-movies");
     };
 
     if (loading) {

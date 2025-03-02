@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Spinner } from "reactstrap";
 
-import authHeader from "./services/authHeader";
+import authService from "./services/authService";
 
 const Genres = () => {
     const [loading, setLoading] = useState(false);
@@ -13,7 +13,7 @@ const Genres = () => {
 
         fetch("/api/genres", {
             method: "GET",
-            headers: authHeader(),
+            headers: { Authorization: authService.getAuthHeaderValue() },
         })
             .then((response) => response.json())
             .then((data) => {

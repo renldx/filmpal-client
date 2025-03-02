@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardBody, CardSubtitle, CardTitle } from "reactstrap";
 
-import authHeader from "./services/authHeader";
+import authService from "./services/authService";
 
 const SuggestedMovie = ({ movie, toggleModal }) => {
     const [movieData, setMovieData] = useState(null);
@@ -17,15 +17,14 @@ const SuggestedMovie = ({ movie, toggleModal }) => {
         fetchMovieDetails(codeWithoutYear);
     };
 
-    const fetchMovieDetails = (code) => {
-        fetch(`/api/details/movie?code=${code}`, {
+    const fetchMovieDetails = async (code) => {
+        const request = await fetch(`/api/details/movie?code=${code}`, {
             method: "GET",
-            headers: authHeader(),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                setMovieData(data);
-            });
+            headers: { Authorization: authService.getAuthHeaderValue() },
+        });
+
+        const response = await request.json();
+        setMovieData(response);
     };
 
     if (!movieData) {

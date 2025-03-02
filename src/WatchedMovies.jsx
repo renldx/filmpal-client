@@ -11,7 +11,7 @@ import {
     Table,
 } from "reactstrap";
 
-import authHeader from "./services/authHeader";
+import authService from "./services/authService";
 
 const WatchedMovies = () => {
     const [loading, setLoading] = useState(false);
@@ -34,7 +34,7 @@ const WatchedMovies = () => {
 
         fetch("/api/watched/movies", {
             method: "GET",
-            headers: authHeader(),
+            headers: { Authorization: authService.getAuthHeaderValue() },
         })
             .then((response) => response.json())
             .then((data) => {
@@ -51,16 +51,14 @@ const WatchedMovies = () => {
         await fetch(`/api/watched/movie?code=${movie.code}`, {
             method: "DELETE",
             headers: {
-                Accept: "application/json",
                 "Content-Type": "application/json",
+                Authorization: authService.getAuthHeaderValue(),
             },
-        }).then(() => {
-            const updatedMovies = [...movies].filter(
-                (i) => i.code !== movie.code,
-            );
-            setMovies(updatedMovies);
-            toggleModal();
         });
+
+        const updatedMovies = [...movies].filter((i) => i.code !== movie.code);
+        setMovies(updatedMovies);
+        toggleModal();
     };
 
     if (loading) {

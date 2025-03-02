@@ -3,6 +3,16 @@ class AuthService {
         return JSON.parse(localStorage.getItem("user"));
     }
 
+    getAuthHeaderValue() {
+        const user = this.getCurrentUser();
+
+        if (user && user.token) {
+            return `Bearer ${user.token}`;
+        } else {
+            return "";
+        }
+    }
+
     async signup(username, password) {
         await fetch("/api/auth/signup", {
             method: "POST",

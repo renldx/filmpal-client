@@ -13,7 +13,7 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import SuggestedMovie from "./SuggestedMovie";
-import authHeader from "./services/authHeader";
+import authService from "./services/authService";
 
 const SuggestedMovies = () => {
     const { genre } = useParams();
@@ -31,20 +31,18 @@ const SuggestedMovies = () => {
 
     const navigate = useNavigate();
 
-    const selectMovie = () => {
-        (async () => {
-            await fetch("/api/watched/movie", {
-                method: "POST",
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    title: movie.title,
-                    release: movie.release,
-                }),
-            });
-        })();
+    const selectMovie = async () => {
+        await fetch("/api/watched/movie", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: authService.getAuthHeaderValue(),
+            },
+            body: JSON.stringify({
+                title: movie.title,
+                release: movie.release,
+            }),
+        });
 
         toggleModal();
         navigate("/");
@@ -55,7 +53,7 @@ const SuggestedMovies = () => {
 
         fetch(`/api/suggested/${genre}`, {
             method: "GET",
-            headers: authHeader(),
+            headers: { Authorization: authService.getAuthHeaderValue() },
         })
             .then((response) => response.json())
             .then((data) => {
