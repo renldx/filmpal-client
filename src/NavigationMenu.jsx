@@ -22,10 +22,12 @@ const NavigationMenu = ({ user, signoutHandler }) => {
             {user ? (
                 <Nav className="ml-auto">
                     <NavItem>
-                        <NavLink>{user.username}</NavLink>
+                        <NavLink href="#">{user.username}</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink onClick={signoutHandler}>Signout</NavLink>
+                        <NavLink href="#" onClick={signoutHandler}>
+                            Signout
+                        </NavLink>
                     </NavItem>
                 </Nav>
             ) : (
