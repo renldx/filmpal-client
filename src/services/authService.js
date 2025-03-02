@@ -19,7 +19,7 @@ class AuthService {
     }
 
     async signin(username, password) {
-        await fetch("/api/auth/signin", {
+        const request = await fetch("/api/auth/signin", {
             method: "POST",
             headers: {
                 Accept: "application/json",
@@ -29,13 +29,13 @@ class AuthService {
                 username: username,
                 password: password,
             }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.token) {
-                    localStorage.setItem("user", JSON.stringify(data));
-                }
-            });
+        });
+
+        const response = await request.json();
+
+        if (response.token) {
+            localStorage.setItem("user", JSON.stringify(response));
+        }
     }
 
     signout() {

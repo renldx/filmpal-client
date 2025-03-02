@@ -69,7 +69,7 @@ const SuggestedMovies = () => {
     }
 
     return (
-        <Container fluid>
+        <Container>
             <h2>Movie Suggestions</h2>
             <h3>Pick a movie:</h3>
             <div className="row gy-3">

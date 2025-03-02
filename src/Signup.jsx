@@ -4,7 +4,7 @@ import { Button, Container, Form, FormGroup, Input, Label } from "reactstrap";
 
 import authService from "./services/authService";
 
-const Signup = () => {
+const Signup = ({ userHandler }) => {
     const [formData, setFormData] = useState({
         username: "",
         password: "",
@@ -18,7 +18,7 @@ const Signup = () => {
         setFormData((prevState) => ({ ...prevState, [name]: value }));
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
         if (validateForm()) {
@@ -26,7 +26,9 @@ const Signup = () => {
                 ...formData,
             });
 
-            authService.signup(formData.username, formData.password);
+            await authService.signup(formData.username, formData.password);
+            userHandler(authService.getCurrentUser());
+            navigate("/");
         }
     };
 

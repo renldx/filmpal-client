@@ -30,13 +30,21 @@ const App = () => {
     };
 
     return (
-        <>
+        <div>
             <NavigationMenu user={user} signoutHandler={signout} />
             <Header />
             <Router>
                 <Routes>
-                    <Route exact path="/signup" element={<Signup />} />
-                    <Route exact path="/signin" element={<Signin />} />
+                    <Route
+                        exact
+                        path="/signup"
+                        element={<Signup userHandler={setUser} />}
+                    />
+                    <Route
+                        exact
+                        path="/signin"
+                        element={<Signin userHandler={setUser} />}
+                    />
                     <Route exact path="/" element={<Home />} />
                     <Route
                         exact
@@ -60,7 +68,7 @@ const App = () => {
                     />
                 </Routes>
             </Router>
-        </>
+        </div>
     );
 };
 
