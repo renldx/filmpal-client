@@ -14,7 +14,7 @@ import WatchedMovies from "./WatchedMovies";
 import authService from "./services/authService";
 
 const App = () => {
-    const [user, setUser] = useState(undefined);
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
         const currentUser = authService.getCurrentUser();
@@ -26,7 +26,7 @@ const App = () => {
 
     const signout = () => {
         authService.signout();
-        setUser(undefined);
+        setUser(null);
     };
 
     return (

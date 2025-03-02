@@ -1,26 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { Spinner } from "reactstrap";
 
-import authService from "./services/authService";
+import { useFetch } from "./hooks/useFetch";
 
 const Genres = () => {
-    const [loading, setLoading] = useState(false);
-    const [genres, setGenres] = useState([]);
-
-    useEffect(() => {
-        setLoading(true);
-
-        fetch("/api/genres", {
-            method: "GET",
-            headers: { Authorization: authService.getAuthHeaderValue() },
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                setGenres(data);
-                setLoading(false);
-            });
-    }, []);
+    const { isPending: isLoading, data: genres } = useFetch(
+        "GET",
+        "/api/genres",
+    );
 
     const getIcon = (genre) => {
         switch (genre) {
@@ -39,13 +27,13 @@ const Genres = () => {
         }
     };
 
-    if (loading) {
+    if (isLoading) {
         return <Spinner />;
     }
 
     return (
         <div>
-            {genres.map((genre) => (
+            {genres?.map((genre) => (
                 <Link
                     key={genre}
                     value={genre}
