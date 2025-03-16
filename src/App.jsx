@@ -11,27 +11,27 @@ import Signup from "./Signup";
 import SuggestedMovies from "./SuggestedMovies";
 import WatchedMovie from "./WatchedMovie";
 import WatchedMovies from "./WatchedMovies";
-import authService from "./services/authService";
+import { getCurrentUser, signout } from "./helpers/authHelpers";
 
 const App = () => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const currentUser = authService.getCurrentUser();
+        const currentUser = getCurrentUser();
 
         if (currentUser) {
             setUser(currentUser);
         }
     }, []);
 
-    const signout = () => {
-        authService.signout();
+    const handleSignout = () => {
+        signout();
         setUser(null);
     };
 
     return (
         <div>
-            <NavigationMenu user={user} signoutHandler={signout} />
+            <NavigationMenu user={user} signoutHandler={handleSignout} />
             <Header />
             <Router>
                 <Routes>

@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import authService from "../services/authService";
+import { getAuthHeaderValue } from "./authHelpers";
 
 export const fetchRequest = (method, url, secure, body) =>
     fetch(url, {
         method: method,
         headers: {
             "Content-Type": "application/json",
-            Authorization: secure ? authService.getAuthHeaderValue() : null,
+            Authorization: secure ? getAuthHeaderValue() : null,
         },
         body: method === "GET" ? null : JSON.stringify(body),
     });

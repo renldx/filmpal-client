@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Form, FormGroup, Input, Label } from "reactstrap";
 
-import authService from "./services/authService";
+import { getCurrentUser, signup } from "./helpers/authHelpers";
 
 const Signup = ({ userHandler }) => {
     const [formData, setFormData] = useState({
@@ -26,8 +26,8 @@ const Signup = ({ userHandler }) => {
                 ...formData,
             });
 
-            await authService.signup(formData.username, formData.password);
-            userHandler(authService.getCurrentUser());
+            await signup(formData.username, formData.password);
+            userHandler(getCurrentUser());
             navigate("/");
         }
     };
