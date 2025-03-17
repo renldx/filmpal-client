@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { getAuthHeaderValue } from "./authHelpers";
+import { getBearerToken, signout } from "./authHelpers";
 
 export const fetchRequest = (method, url, secure, body) =>
     fetch(url, {
         method: method,
         headers: {
             "Content-Type": "application/json",
-            Authorization: secure ? getAuthHeaderValue() : null,
+            Authorization: secure ? getBearerToken() : null,
         },
         body: method === "GET" ? null : JSON.stringify(body),
     });
@@ -29,6 +29,7 @@ export const useFetch = (method, url, secure, body, callback) => {
 
                 if (!request.ok) {
                     if (request.status === 401) {
+                        signout();
                         navigate("/signin");
                     } else {
                         throw new Error(request.statusText);

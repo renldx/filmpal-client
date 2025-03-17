@@ -1,9 +1,9 @@
-export const getCurrentUser = () => {
+export const getLocalUser = () => {
     return JSON.parse(localStorage.getItem("user"));
 };
 
-export const getAuthHeaderValue = () => {
-    const user = getCurrentUser();
+export const getBearerToken = () => {
+    const user = getLocalUser();
 
     if (user && user.token) {
         return `Bearer ${user.token}`;

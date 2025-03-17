@@ -11,13 +11,13 @@ import Signup from "./Signup";
 import SuggestedMovies from "./SuggestedMovies";
 import WatchedMovie from "./WatchedMovie";
 import WatchedMovies from "./WatchedMovies";
-import { getCurrentUser, signout } from "./helpers/authHelpers";
+import { getLocalUser, signout } from "./helpers/authHelpers";
 
 const App = () => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const currentUser = getCurrentUser();
+        const currentUser = getLocalUser();
 
         if (currentUser) {
             setUser(currentUser);
@@ -38,12 +38,12 @@ const App = () => {
                     <Route
                         exact
                         path="/signup"
-                        element={<Signup userHandler={setUser} />}
+                        element={<Signup setUserHandler={setUser} />}
                     />
                     <Route
                         exact
                         path="/signin"
-                        element={<Signin userHandler={setUser} />}
+                        element={<Signin setUserHandler={setUser} />}
                     />
                     <Route exact path="/" element={<Home />} />
                     <Route

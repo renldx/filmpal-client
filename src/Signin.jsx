@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Form, FormGroup, Input, Label } from "reactstrap";
 
-import { getCurrentUser, signin } from "./helpers/authHelpers";
+import { getLocalUser, signin } from "./helpers/authHelpers";
 
-const Signin = ({ userHandler }) => {
+const Signin = ({ setUserHandler }) => {
     const [formData, setFormData] = useState({
         username: "",
         password: "",
@@ -27,7 +27,7 @@ const Signin = ({ userHandler }) => {
             });
 
             await signin(formData.username, formData.password);
-            userHandler(getCurrentUser());
+            setUserHandler(getLocalUser());
             navigate("/");
         }
     };
