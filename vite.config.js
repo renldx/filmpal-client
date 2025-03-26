@@ -10,8 +10,9 @@ export default defineConfig(() => {
         plugins: [react(), eslint()],
         server: {
             proxy: {
-                "/api": "http://localhost:8080",
+                "/api": "http://filmpal-server:8080",
             },
+            host: true,
         },
         test: {
             globals: true,
